@@ -1,0 +1,29 @@
+From 0277702903f889ecda64adac4da41a5e48402e94 Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+Date: Sat, 21 Nov 2009 14:21:13 +0100
+Subject: [PATCH 6/6] added option to make curl verbose
+
+With this patch, when the $XMLRPC_TRACE_CURL environment variable is
+set, verbose curl output/debugging will be enabled.  Based upon a
+patch from John Dennis <jdennis AT redhat.com>
+---
+ lib/curl_transport/curltransaction.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/lib/curl_transport/curltransaction.c b/lib/curl_transport/curltransaction.c
+index efcbcb0..abf243f 100644
+--- a/lib/curl_transport/curltransaction.c
++++ b/lib/curl_transport/curltransaction.c
+@@ -457,6 +457,9 @@ setupCurlSession(xmlrpc_env *               const envP,
+             curl_easy_setopt(curlSessionP, CURLOPT_SSL_CIPHER_LIST,
+                              curlSetupP->sslCipherList);
+ 
++        if (getenv("XMLRPC_TRACE_CURL"))
++            curl_easy_setopt(curlSessionP, CURLOPT_VERBOSE, 1l);
++
+         if (curlSetupP->timeout)
+             setCurlTimeout(curlSessionP, curlSetupP->timeout);
+ 
+-- 
+1.6.5.2
+
